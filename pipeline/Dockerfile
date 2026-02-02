@@ -1,4 +1,8 @@
 FROM python:3.13.11-slim
+RUN apt-get update && apt-get install -y \
+    libpq-dev \
+    gcc \
+    && rm -rf /var/lib/apt/lists/*
 
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /bin/
 WORKDIR /code
@@ -14,4 +18,5 @@ RUN uv sync --locked
 
 COPY ingest_data.py .
 
-ENTRYPOINT [ "python", "pipeline.py" ]
+ENTRYPOINT [ "python", "ingest_data.py" ]
+
